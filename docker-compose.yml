@@ -11,10 +11,14 @@ services:
       dockerfile: Dockerfile
     environment: 
       - LD_LIBRARY_PATH=/openpose/build/python/openpose
-      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_VISIBLE_DEVICES=1
     volumes: 
-      - /Users/runebrinckmeyer/dev/runetech/posing/docker/pose-models:/openpose/models/pose
-      - /Users/runebrinckmeyer/dev/runetech/posing/docker/src/01_body_from_image.py:/openpose/examples/tutorial_api_python/01_body_from_image.py
+      - /home/runeb/dev/var/vor/pose-models:/openpose/models/pose
+      - /home/runeb/dev/var/vor/src/01_body_from_image.py:/openpose/examples/tutorial_api_python/01_body_from_image.py
+#      - /Users/runebrinckmeyer/dev/runetech/posing/docker/pose-models:/openpose/models/pose
+#      - /Users/runebrinckmeyer/dev/runetech/posing/docker/src/01_body_from_image.py:/openpose/examples/tutorial_api_python/01_body_from_image.py
 
 
 #docker run --rm -it --gpus all -e LD_LIBRARY_PATH=/openpose/build/python/openpose -e NVIDIA_VISIBLE_DEVICES=0 - v /Users/runebrinckmeyer/dev/runetech/posing/docker/pose-models:/openpose/models/pose -v /Users/runebrinckmeyer/dev/runetech/posing/docker/src/01_body_from_image.py:/openpose/examples/tutorial_api_python/01_body_from_image.py bash
+
+# sudo docker run --gpus all --rm --name openpose -e LD_LIBRARY_PATH=/openpose/build/python/openpose -v /home/runeb/dev/var/vor/pose-models:/openpose/models/pose -v /home/runeb/dev/var/vor/src/01_body_from_image.py:/openpose/examples/tutorial_api_python/01_body_from_image.py -v /home/runeb/dev/var/vor/test-data:/testdata -v /home/runeb/dev/var/vor/out-data:/outdata -it vor:latest /bin/bash

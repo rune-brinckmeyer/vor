@@ -5,6 +5,8 @@ import cv2
 import os
 from sys import platform
 import argparse
+import numpy as np
+
 import pyopenpose as op
 
 try:
@@ -30,7 +32,8 @@ try:
     # Flags
     parser = argparse.ArgumentParser()
     # parser.add_argument("--image_path", default="../../../examples/media/COCO_val2014_000000000192.jpg", help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
-    parser.add_argument("--image_path", default="../../examples/media/COCO_val2014_000000000192.jpg", help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
+#    parser.add_argument("--image_path", default="../../examples/media/COCO_val2014_000000000192.jpg", help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
+    parser.add_argument("--image_path", default="/testdata/vig-3.jpg", help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
     args = parser.parse_known_args()
 
     # Custom Params (refer to include/openpose/flags.hpp for more parameters)
@@ -55,6 +58,7 @@ try:
     # oppython = op.OpenposePython()
 
     # Starting OpenPose
+    params.update({"write_json": "json_out", "part_candidates": True})
     opWrapper = op.WrapperPython()
     opWrapper.configure(params)
     opWrapper.start()
@@ -67,9 +71,13 @@ try:
 
     # Display Image
     print("Body keypoints: \n" + str(datum.poseKeypoints))
+    print(f"Number of keypoints: {datum.poseKeypoints.shape}")
     # cv2.imshow("OpenPose 1.5.1 - Tutorial Python API", datum.cvOutputData)
     # cv2.waitKey(0)
+    poseModel = op.PoseModel.BODY_25
+    PARTS_OF_THE_SKELLEY = (op.getPoseBodyPartMapping(poseModel))
     cv2.imwrite("result_body.jpg", datum.cvOutputData)
+    datum.poseKeypoints.tofile("result_keypoints.out")
 except Exception as e:
     print(e)
     sys.exit(-1)
